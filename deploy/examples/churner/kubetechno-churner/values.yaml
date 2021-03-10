@@ -1,0 +1,5 @@
+img:
+  app: localhost:5000/kubetechno/examples/churner-app:tmp
+  churner: localhost:5000/kubetechno/examples/churner:tmp
+replicas: 7
+portCount: "1"

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interceptor
+  labels:
+    app: kubetechno-interceptor
+spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: kubetechno-interceptor
+    template:
+      metadata:
+        labels:
+          app: kubetechno-interceptor
+      spec:
+       serviceAccountName: interceptor
+       containers:
+         - name: kubetechno
+           image: {{ .Values.img.interceptor }}
+           imagePullPolicy: {{ .Values.img.pullPolicy }}
+           env:
+           - name: LOWER_BOUND
+             value: {{ .Values.settings.lowerPortBound | quote }}
+           - name: UPPER_BOUND
+             value: {{ .Values.settings.upperPortBound | quote }}
+           volumeMounts:
+           - name: pems
+             mountPath: /etc/kubetechno/pems
+             readOnly: true
+       volumes:
+       - name: pems
+         secret:
+           secretName: interceptor-pems

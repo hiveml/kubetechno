@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubetechno-churner
+spec:
+  serviceAccountName: kubetechno-churner
+  hostNetwork: true
+  containers:
+    - name: churner
+      image: "{{ .Values.img.churner }}"
+      imagePullPolicy: Always
+      volumeMounts:
+        - mountPath: /churn
+          name: churn
+      env:
+        - name: namespace
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: replicas
+          value: {{ .Values.replicas | toString | quote }}
+  nodeSelector:
+    kubetechnoTestConsulRole: server
+  volumes:
+    - name: churn
+      emptyDir: {}

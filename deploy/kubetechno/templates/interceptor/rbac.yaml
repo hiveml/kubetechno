@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubetechno-interceptor
+  namespace: kubetechno
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/binding"]
+    verbs: ["*"] # todo: trim permissions
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: interceptor
+  namespace: kubetechno
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubetechno-interceptor
+  namespace: kubetechno
+subjects:
+  - kind: ServiceAccount
+    name: interceptor
+    namespace: kubetechno
+roleRef:
+  kind: ClusterRole
+  name: kubetechno-interceptor
+  apiGroup: rbac.authorization.k8s.io

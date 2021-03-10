@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubetechno-example
+  annotations:
+    kubetechno_port_count: "1"
+  labels:
+    kubetechno: user
+spec:
+  containers:
+    - name: alpine
+      image: alpine
+      command:
+        - sleep
+      args:
+        - infinity

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubetechno-churner-app
+spec:
+  selector:
+    matchLabels:
+      app: kubetechno-churner-app
+  replicas: {{ .Values.replicas }}
+  template:
+    metadata:
+      annotations:
+        kubetechno_port_count: "{{ .Values.portCount }}"
+        kubetechno_consul_service: kubetechno-churner-app
+        kubetechno_consul_service_pull_policy: Always
+        kubetechno_consul_check_path: "/"
+        kubetechno_consul_initial_delay_seconds: "3"
+        kubetechno_consul_period_seconds: "30"
+      labels:
+        app: kubetechno-churner-app
+        kubetechno: user
+    spec:
+      containers:
+        - name: server
+          image: "{{ .Values.img.app }}"
+          command:
+           - ./server
+          env:
+            - name: pod_name
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: pod_namespace
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: pod_ip
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: node_name
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          imagePullPolicy: Always
+      nodeSelector:
+        kubetechnoTest: churner

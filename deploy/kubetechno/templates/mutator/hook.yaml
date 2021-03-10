@@ -1,0 +1,34 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: kubetechno-mutator
+  labels:
+    app: kubetechno-mutator
+webhooks:
+  - name: pod-mutate-hook.mutator.kubetechno
+    admissionReviewVersions:
+      - 'v1'
+    clientConfig:
+      service:
+        name: mutator
+        namespace: kubetechno
+        path: "/pod-mutate-hook"
+        port: 443
+      caBundle: {{ .Values.crypt.mutator.cABundle }}
+    rules:
+      - operations:
+        - "CREATE"
+        apiGroups:
+        - ""
+        apiVersions:
+        - "v1"
+        resources:
+        - "pods"
+    objectSelector:
+      matchLabels:
+        kubetechno: user
+    namespaceSelector:
+      matchLabels:
+        kubetechno: user
+    failurePolicy: Fail
+    sideEffects: None

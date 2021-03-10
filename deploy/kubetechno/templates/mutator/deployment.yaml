@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mutator
+  labels:
+    app: kubetechno-mutator
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: kubetechno-mutator
+    spec:
+     containers:
+       - name: mutator
+         image: "{{ .Values.img.mutator }}"
+         imagePullPolicy: {{ .Values.img.pullPolicy }}
+         volumeMounts:
+         - name: pems
+           mountPath: /etc/kubetechno/pems
+           readOnly: true
+         env:
+           - name: default_consul_image
+             value: "{{ .Values.img.consulClient }}"
+     volumes:
+     - name: pems
+       secret:
+         secretName: mutator-pems
+  selector:
+    matchLabels:
+      app: kubetechno-mutator

@@ -1,0 +1,26 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kubetechno-churner
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["delete", "get", "list"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubetechno-churner
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubetechno-churner
+subjects:
+  - kind: ServiceAccount
+    name: kubetechno-churner
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: kubetechno-churner
+  apiGroup: rbac.authorization.k8s.io
