@@ -12,11 +12,12 @@ import (
 )
 
 type Orchestrator struct {
-	superLock  *sync.Mutex // todo: move the locking system out of this struct
-	nodeLocks  map[string]*sync.Mutex
-	kClient    k8sClient
-	lowerBound int
-	upperBound int
+	superLock       *sync.Mutex // todo: move the locking system out of this struct
+	nodeLocks       map[string]*sync.Mutex
+	kClient         k8sClient
+	lowerBound      int
+	upperBound      int
+	disallowedPorts map[int]interface{}
 }
 
 type k8sClient interface {
@@ -73,6 +74,9 @@ func (o *Orchestrator) selectPorts(occupiedPorts map[int]interface{}, count int)
 		return nil
 	}
 	for i := o.lowerBound; i < o.upperBound; i += 1 {
+		if _, disallowed := o.disallowedPorts[i]; disallowed {
+			continue
+		}
 		if _, in := occupiedPorts[i]; !in {
 			claimedPorts[c] = i
 			c += 1

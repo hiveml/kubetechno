@@ -6,6 +6,7 @@ img:
 settings:
   lowerPortBound: '9000' # inclusive bound
   upperPortBound: '10000' # exclusive bound
+  disallowedPorts: '9002,9004'
 crypt:
   mutator:
     cABundle: ''

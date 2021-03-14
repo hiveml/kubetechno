@@ -22,7 +22,7 @@ func main() {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-	o := orchestrator.New(settings.LowerBound, settings.UpperBound, kClient)
+	o := orchestrator.New(settings.LowerBound, settings.UpperBound, kClient, settings.DisallowedPorts)
 	bindHandler := handler.New(o)
 	http.HandleFunc("/bind-hook", bindHandler.ServeHTTP)
 	if err := http.ListenAndServeTLS(":443", settings.CertFilePath, settings.KeyFilePath, nil); err != nil {

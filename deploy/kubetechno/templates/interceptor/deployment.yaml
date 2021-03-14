@@ -24,6 +24,8 @@ spec:
              value: {{ .Values.settings.lowerPortBound | quote }}
            - name: UPPER_BOUND
              value: {{ .Values.settings.upperPortBound | quote }}
+           - name: DISALLOWED_PORTS
+             value: {{ .Values.settings.disallowedPorts | quote }}
            volumeMounts:
            - name: pems
              mountPath: /etc/kubetechno/pems
