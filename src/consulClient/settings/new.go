@@ -1,6 +1,7 @@
 package settings
 
 import (
+	"fmt"
 	"kubetechno/common/constants"
 	"os"
 	"strconv"
@@ -16,11 +17,16 @@ func New() (s Settings, err error) {
 	periodSeconds, err := strconv.Atoi(periodSecondsStr)
 	portStr := os.Getenv("PORT0")
 	port, err := strconv.Atoi(portStr)
+	consulNodeName := os.Getenv("CONSUL_NODE_NAME")
+	path := os.Getenv(constants.ConsulCheckPath)
+	fmt.Println(consulNodeName)
 	return Settings{
-		serviceName:   consulService,
-		port:          port,
-		bufferSecs:    bufferSecs,
-		periodSeconds: periodSeconds,
-		timeoutSecs:   timeoutSeconds,
+		serviceName:    consulService,
+		consulNodeName: consulNodeName,
+		port:           port,
+		bufferSecs:     bufferSecs,
+		periodSeconds:  periodSeconds,
+		timeoutSecs:    timeoutSeconds,
+		path: path,
 	}, err
 }

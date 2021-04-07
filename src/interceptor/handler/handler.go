@@ -17,6 +17,7 @@ type Handler struct {
 
 // ServeHTTP handles http requests to assign ports to kubetechno pods.
 func (s *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("handling")
 	ls := LogStruct{}
 	ls.LastStep = "start"
 	defer func() {

@@ -13,6 +13,11 @@ spec:
         - mountPath: /churn
           name: churn
       env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
         - name: namespace
           valueFrom:
             fieldRef:

@@ -1,8 +1,8 @@
 img:
   pullPolicy: Always
-  interceptor: locahost:5000/kubetechno/interceptor:tmp
-  mutator: locahost:5000/kubetechno/mutator:tmp
-  consulClient: locahost:5000/kubetechno/consul-client:tmp
+  interceptor: localhost:5000/kubetechno/interceptor:tmp
+  mutator: localhost:5000/kubetechno/mutator:tmp
+  consulClient: localhost:5000/kubetechno/consul-client:tmp
 settings:
   lowerPortBound: '9000' # inclusive bound
   upperPortBound: '10000' # exclusive bound

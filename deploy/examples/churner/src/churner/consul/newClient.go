@@ -1,8 +1,13 @@
 package consul
 
-import "github.com/hashicorp/consul/api"
+import (
+	"github.com/hashicorp/consul/api"
+	"os"
+)
 
 // Create a new consul api client
 func NewClient() (*api.Client, error) {
-	return api.NewClient(api.DefaultConfig()) // todo: make the consul config more flexible
+	consulClientConfig := api.DefaultConfig()
+	consulClientConfig.Address = os.Getenv("NODE_NAME") + ":8500"
+	return api.NewClient(consulClientConfig) // todo: make the consul config more flexible
 }

@@ -6,7 +6,9 @@ import (
 )
 
 func New(s settings.Settings) (Wrapper, error) {
-	c, err := api.NewClient(api.DefaultConfig())
+	config := api.DefaultConfig()
+	config.Address = s.ConsulNode() + ":8500"
+	c, err := api.NewClient(config)
 	return Wrapper{
 		c: c,
 		s: s,

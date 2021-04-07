@@ -11,6 +11,6 @@ spec:
     - name: alpine
       image: alpine
       command:
-        - sleep
+        - echo
       args:
-        - infinity
+        - $(PORT0)

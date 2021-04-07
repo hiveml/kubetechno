@@ -8,12 +8,17 @@ import (
 )
 
 type Settings struct {
-	serviceName   string
-	port          int
-	timeoutSecs   int
-	bufferSecs    int
-	periodSeconds int
-	path          string
+	serviceName    string
+	consulNodeName string
+	port           int
+	timeoutSecs    int
+	bufferSecs     int
+	periodSeconds  int
+	path           string
+}
+
+func (s Settings) ConsulNode() string {
+	return s.consulNodeName
 }
 
 func (s Settings) Registration() api.AgentServiceRegistration {
@@ -69,5 +74,5 @@ func (s Settings) CheckID() string {
 }
 
 func (s Settings) GetURL() string {
-	return "http://localhost:" + strconv.Itoa(s.Port()) + "/" + s.path
+	return "http://" + s.consulNodeName +  ":" + strconv.Itoa(s.Port()) + s.path
 }

@@ -53,7 +53,12 @@ func (p Patcher) addDataFromLabels(po *v1.Pod) error {
 	// and errors so 2 of the rtn vals are not needed
 	serviceName, _, _ := getConsulServiceName(po.Annotations)
 	addToEnvVars(po, constants.ConsulServiceName, serviceName)
-
+	po.Spec.Containers[0].Env = append(po.Spec.Containers[0].Env,
+		v1.EnvVar{Name: "CONSUL_NODE_NAME", ValueFrom: &v1.EnvVarSource{
+		FieldRef: &v1.ObjectFieldSelector{
+			FieldPath: "spec.nodeName",
+		},
+	}})
 	intSettings := make(map[string]int, 4)
 	intSettings[constants.ConsulBufferSecs] = 10
 	intSettings[constants.ConsulTimeoutSeconds] = 30
